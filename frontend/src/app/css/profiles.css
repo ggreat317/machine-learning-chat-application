@@ -1,0 +1,122 @@
+
+.match{
+  width: 250px;
+  background: var(--side);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  height: 100vh;
+  color: #fff;
+  font-family: sans-serif;
+  flex:.3;
+}
+
+@media (max-width:1000px){
+  .match{
+    display: none;
+  }
+}
+
+
+.big{
+  color:var(--text);
+  font-size: 30px;
+  align-self: center;
+}
+
+.profiles{
+  width: 100%;
+  flex: 1;
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: visible;
+  padding: 10px;
+}
+
+.profiles::-webkit-scrollbar{
+  background: transparent;
+}
+
+.profiles::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  width: 1px;
+  background: rgba(0,0,0,0.25);
+}
+
+.profile{
+  color:var(--text);
+  display:flex;
+  flex-direction: column;
+  min-height: 10vh;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  gap:4px;
+  padding: 5px 7px;
+  background-color: var(--button);
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  justify-content: center;
+}
+
+.profile.open{
+  min-height: 20vh;
+}
+
+.pfp{
+  height: 5vh;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: var(--send);
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  color: var(--text);
+  font-weight: bold;
+  margin-bottom: 5%;
+}
+
+.profile::-webkit-scrollbar{
+  background: transparent;
+}
+
+.profile::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  width: 1px;
+  background: rgba(0,0,0,0.25);
+}
+
+.userinfo{
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  width: 100%;
+}
+
+.usernameHolder{
+  width: 100%;
+  overflow-x: none;
+}
+.username{
+  font-weight: 700;
+  font-size: min(3vh,3vw);
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.aboutme{
+  text-align: center;
+}
+
+.small{
+  font-size: min(2vh,2vw);
+}
+
+.reg{
+  font-weight: 500;
+  line-height: 1.1;
+}

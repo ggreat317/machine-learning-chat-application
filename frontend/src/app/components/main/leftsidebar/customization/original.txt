@@ -1,0 +1,147 @@
+'use client'
+
+import { useState, ReactElement, useEffect } from 'react';
+import { useDataBase } from '../../../homepage/database';
+
+type Setter = React.Dispatch<React.SetStateAction<string>>
+
+const selection = ["text", "border", "side", "button", "hover", "header", "chat", "time", "foot", "input", "send"]
+
+const darkMode = ["#fefeff", "#222223", "#232428", "#232428", "#b9bbbe", "#23272a", "#313338", "#b9bbbe", "#383a40", "#202225", "#5865f2"]
+const lightMode = ["#fefeff", "#ede8d0", "#dfcaa0", "#ffe4c4", "#b9bbbe", "#ddc092", "#ffd8a8", "#ffffff", "#fbe3ba", "#f7d9d9", "#f7d9d9"]
+
+export function CustomBar({ setSidebar }: { setSidebar: Setter }) {
+	const [mode, setMode] = useState("");
+	const [change, setChange] = useState(true);
+
+	const { custom, setCustom } = useDataBase();
+
+	const colorKey = new Map<string, string>();
+
+	selection.forEach((name) => {
+		colorKey.set(name, getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim())
+	})
+
+	useEffect(() => {
+		setCustom(JSON.stringify(Object.fromEntries(colorKey)))
+		console.log('giant')
+	}, [change])
+
+	/*useEffect(() => {
+		selection.forEach((name) =>{
+			colorKey.set(name, getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim())
+		})
+		setCustom(colorKey)
+		console.log(colorKey)
+	},[change])*/
+
+	const colorSelection = [...colorKey].map(([name, color]: [string, string]) => {
+		return (
+			<option
+				style={{ backgroundColor: "#222223", color: "#fefeff" }}
+				key={name}
+				value={color}
+			>
+				{color}
+			</option>
+		)
+	})
+
+	const colorOptions = [...colorKey].map(([name, color]: [string, string]) => {
+		return (
+			<div key={name}>
+				<ColorOptions name={name} color={color} selection={colorSelection} setChange={setChange} change={change}></ColorOptions>
+			</div>
+		);
+	})
+
+	return (
+		<div className="sidebar">
+			<div className="top">
+				<span className="text big">Customization</span>
+			</div>
+			<div className="tabs">
+				<div className="colorSelection">{colorOptions}</div>
+				<MenuButton name={""} set={() => modes(mode, setMode, setCustom, colorKey)} className={`customMode-save`}></MenuButton>
+			</div>
+			<div className="bottom">
+				<MenuButton name={""} set={() => modes(mode, setMode, setCustom, colorKey)} className={`customMode ${mode}`}></MenuButton>
+				<MenuButton name={"Exit Customization"} set={() => setSidebar("")} className={""}></MenuButton>
+			</div>
+		</div>
+	);
+}
+
+function modes(mode: string, setMode: Setter, setCustom: React.Dispatch<React.SetStateAction<string>>, colorKey: Map<string, string>) {
+	let newMode;
+	if (mode === "") {
+		setMode("active");
+		newMode = lightMode;
+	} else {
+		setMode("");
+		newMode = darkMode;
+	}
+	selection.forEach((name, index) => {
+		document.documentElement.style.setProperty(`--${name}`, newMode[index])
+	})
+	//setCustom(JSON.stringify(Object.fromEntries(colorKey)))
+	return;
+}
+
+function ColorOptions({ name, color, selection, setChange, change }: { name: string, color: string, selection: ReactElement[], setChange: React.Dispatch<React.SetStateAction<boolean>>, change: boolean }) {
+	const [input, setInput] = useState(color)
+	const title = name[0].toUpperCase() + name.slice(1) + "";
+	return (
+		<div className="colorSelect">
+			<span className="text color-select-text">{title}</span>
+			<form onSubmit={(value: React.FormEvent) => {
+				value.preventDefault();
+				document.documentElement.style.setProperty(`--${name}`, input);
+				setChange(!change);
+			}}>
+				<input
+					list="colors"
+					placeholder={color}
+					className="color-select-select"
+					value={input}
+					onChange={(e) => setInput(e.target.value)}
+				/>
+				<datalist id="colors">{selection}</datalist>
+			</form>
+			<form
+				className="color-select-select"
+				onSubmit={(value: React.FormEvent) => {
+					value.preventDefault();
+					console.log(value)
+					document.documentElement.style.setProperty(`--${name}`, input);
+					setChange(!change);
+				}}>
+				<input
+					type="color"
+					className="cursor-pointer"
+					value={input}
+					onChange={(e) => setInput(e.target.value)}
+				/>
+				<button type="submit" className="color-select-submit"></button>
+			</form>
+		</div>
+	);
+}
+
+function MenuButton({ name, set, className }: { name: string, set: Setter | Promise<void> | void, className: string }) {
+	if (typeof set === "function") {
+		return (
+			<button
+				className={"button menu-button " + className}
+				onClick={() => set(name)}
+			>{name}</button>
+		);
+	} else {
+		return (
+			<button
+				className={"button menu-button " + className}
+				onClick={() => set}
+			>{name}</button>
+		);
+	}
+}

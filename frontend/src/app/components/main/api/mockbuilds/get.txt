@@ -1,0 +1,23 @@
+export async function getSomething(field) {
+  
+  const token = await getIdToken();
+  
+  const params = new URLSearchParams({
+    field
+  });
+
+  // change route
+  const res = await fetch(`${API_URL}/route?${params.toString()}`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Failed to get older messages ${res.status} ${errorText}`);
+  }
+
+  return await res.json();
+}

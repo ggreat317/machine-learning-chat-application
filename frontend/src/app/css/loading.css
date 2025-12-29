@@ -1,0 +1,40 @@
+.loading-background {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(120deg, #222222, #232428, #313338);
+  background-size: 300% 300%;
+  animation: gradientMove 8s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.text-layer {
+  position: relative;
+  top: -100%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  transform: rotate(-45deg);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  opacity: 0.07;
+}
+
+.text-row {
+  white-space: nowrap;
+  font-size: min(10vw,10vh);
+  font-weight: bold;
+  color: #fff;
+  animation: textMove 12s linear infinite;
+}
+
+@keyframes textMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

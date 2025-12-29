@@ -1,0 +1,95 @@
+import { useState, useRef, useEffect } from "react";
+import { db } from "../../../config/firebase";
+import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+import { useAuth } from '../../homepage/auth';
+
+export function ChatScreen({ChatLog} : {ChatLog : string}) {
+
+  type FirestoreMessage = {
+    text: string;
+    time: Timestamp;
+    userID: string;
+    userName: string;
+    id: string;
+  }
+
+  const [messages, setMessages] = useState<FirestoreMessage[]>([]);
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  useEffect(() => {
+    if (!user) {
+      setMessages([])
+      return;
+    }
+
+    const snapMessagesDoc = doc(db, "messages", ChatLog, "chatlog", "chatlog");
+    const snapMessages = onSnapshot(snapMessagesDoc, (snapshot) => {
+      if (!user) {
+        return;
+      }
+      const data = snapshot.data();
+      if (!data) return;
+      // if (!data.chatlog) return;
+      // const chatlog: Record<string, FirestoreMessage> = data.chatlog;
+
+      const filteredData = Object.entries(data).map(([id, message]: [string, FirestoreMessage]) => ({
+        text: message.text,
+        time: message.time,
+        userID: message.userID,
+        userName: message.userName,
+        id: id
+      }));
+
+      filteredData.sort((a, b) => {
+        const timeA = a.time ? a.time.toMillis() : 0;
+        const timeB = b.time ? b.time.toMillis() : 0;
+        return timeA - timeB;
+      });
+
+      setMessages(filteredData);
+    })
+
+    return () => {
+      snapMessages()
+      setMessages([])
+    };
+  }, [user, loading])
+
+  const chatMessage = messages.map((message) => {
+
+    const time = message.time ? message.time.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return (
+      <div key={message.id}>
+        <Message user={message.userName} text={message.text} time={time}></Message>
+      </div>
+    );
+  })
+
+  return (
+    <div className="main-chat-screen">
+      {user && <div>{chatMessage}</div>}
+      <div ref={bottomRef} />
+    </div>
+  );
+}
+
+function Message({ user, text, time }: { user: string; text: string; time: string }) {
+  return (
+    <div className="message">
+      <div className="message-pfp">{user[0]}</div>
+      <div className="message-info">
+        <div className="message-meta">
+          <div className="message-user">{user}</div>
+          <div className="message-time">{time}</div>
+        </div>
+        <div className="message-message">{text}</div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,29 @@
+
+import { db } from '../../../config/firebase';
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { User } from "firebase/auth";
+
+export function AddProfile({user} : {user : User | null}) {
+
+  if(!user){
+    return;
+  }
+
+  const profilesDoc = doc(db, "messages", "miC9tkmJGE94KwdePAC1");
+
+  const handleProfileSubmit = async () => {
+    const newProfile = {
+      [user.uid]: {
+        userName: user.displayName,
+        profile: "",
+        userID: user.uid
+      }
+    }
+
+    try {
+      await updateDoc(profilesDoc, {profiles: arrayUnion(newProfile)})
+    } catch (err) {
+      console.log(err)
+    }
+  }
+

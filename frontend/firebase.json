@@ -1,0 +1,51 @@
+{
+  "hosting": {
+    "site": "murmurs",
+    "public": "out",
+    "ignore": [
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.env*"
+    ],
+    "redirects": [],
+    "rewrites": [
+      {
+        "source": "/login",
+        "destination": "/login.html"
+      },
+      {
+        "source": "/main",
+        "destination": "/main.html"
+      },
+      {
+        "source": "!/static/**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "!/_next/**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix ./functions run lint",
+        "npm --prefix ./functions run build"
+      ]
+    }
+  ]
+}

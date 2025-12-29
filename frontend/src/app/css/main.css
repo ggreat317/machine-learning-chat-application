@@ -1,0 +1,37 @@
+.input{
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: var(--input);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.button{
+  flex: 1 ;
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: bold;
+  opacity: 0.7;
+  display:block;
+  width:97%;
+  margin-top: 5px;
+  background: var(--button);
+}
+
+.button:hover{
+  opacity:0.5;
+  color: var(--hover);
+}
+
+.text{
+  padding: 0 16px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--text);
+}

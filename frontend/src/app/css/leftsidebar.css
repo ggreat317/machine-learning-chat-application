@@ -1,0 +1,112 @@
+/* this stuff is left sidebar*/
+.sidebar {
+  width: 250px;
+  background: var(--side);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 24px;
+  height: 100vh;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  justify-content: space-between;
+}
+
+@media (max-width:100px){
+  .sidebar{
+    display: none;
+  }
+}
+
+.top{
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs{
+  overflow-y: scroll;
+}
+
+.tabs::-webkit-scrollbar{
+  background: transparent;
+  width: 3px;
+}
+
+.tabs::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background: rgba(0,0,0,0.25);
+}
+
+.bottom{
+  margin-top: auto;
+}
+
+
+.menu-input{
+  background-color: rgb(82, 82, 82);
+  border: 1px solid #222;
+}
+
+.menu-button{
+  box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+}
+
+.logout{
+  background-color:  #d93025;
+}
+
+.logout:hover{
+  background-color:  #b3251b;
+  opacity:0.7;
+}
+
+.customMode{
+  background-color: bisque;
+  color: white;
+  transition-duration: 1s;
+}
+
+.customMode::after{
+  content : "Light Mode";
+}
+
+.customMode.active {
+  background-color: black;
+  color:white;
+  content: "Dark Mode";
+}
+
+.customMode.active::after{
+  content : "Dark Mode";
+}
+
+.colorSelection{
+  height: 70%;
+  color:#fefeff;
+}
+
+.colorSelect{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap:0px;
+  padding:0px;
+  align-items: center;
+}
+
+
+.color-select-text{
+  white-space: nowrap;
+  padding:0px;
+  padding-right: 3%;
+}
+
+.color-select-select{
+  color:#fefeff;
+  width:100%;
+}
+
+.customMode-save{
+  height:2vh;
+  background-color: black;
+}
